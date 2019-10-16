@@ -1,6 +1,6 @@
 # Node - Create Conference Tutorial
 
-This project serves as a guide to help you build an application with Persephony. Specifically, the project will:
+This project serves as a guide to help you build an application with FreeClimb. Specifically, the project will:
 
 - Accept incoming calls
 - Receive digits from the caller
@@ -9,9 +9,9 @@ This project serves as a guide to help you build an application with Persephony.
 
 This application will receive calls and have users enter the conference code of the conference they wish to join. It will then either create the conference or add the caller to an already existant conference. 
 
-## Setting up your new app within your Persephony account
+## Setting up your new app within your FreeClimb account
 
-To get started using a persephony account, follow the instructions [here](https://persephony-docs.readme.io/docs/getting-started-with-persephony).
+To get started using a FreeClimb account, follow the instructions [here](https://persephony-docs.readme.io/docs/getting-started-with-persephony).
 
 ## Setting up the Tutorial
 
