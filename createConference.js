@@ -1,17 +1,17 @@
 require('dotenv').config()
 const express = require('express')
 const bodyParser = require('body-parser')
-const persephonySDK = require('@persephony/sdk')
+const freeclimbSDK = require('@freeclimb/sdk')
 
 const app = express()
 app.use(bodyParser.json())
 // Where your app is hosted ex. www.myapp.com
 const host = process.env.HOST
 const port = process.env.PORT || 3000
-// your Persephony API key (available in the Dashboard) - be sure to set up environment variables to store these values
+// your freeclimb API key (available in the Dashboard) - be sure to set up environment variables to store these values
 const accountId = process.env.ACCOUNT_ID
 const authToken = process.env.AUTH_TOKEN
-const persephony = persephonySDK(accountId, authToken)
+const freeclimb = freeclimbSDK(accountId, authToken)
 
 function ConferenceRoom() {
   // stores conferenceId associated with this room
@@ -33,16 +33,16 @@ for (let code in conferenceRoomsCodes) {
 
 app.post('/incomingCall', (req, res) => {
   // Create PerCL say command
-  const greeting = persephony.percl.say('Hello. Welcome to the conferences tutorial, please enter your access code.')
+  const greeting = freeclimb.percl.say('Hello. Welcome to the conferences tutorial, please enter your access code.')
   // Create PerCL for getDigits command
   const options = {
     maxDigits: 1,
     minDigits: 1,
     flushBuffer: true
   }
-  const getDigits = persephony.percl.getDigits(`${host}/gotDigits`, options)
+  const getDigits = freeclimb.percl.getDigits(`${host}/gotDigits`, options)
   // Build and respond with Percl command
-  const percl = persephony.percl.build(greeting, getDigits)
+  const percl = freeclimb.percl.build(greeting, getDigits)
   res.status(200).json(percl)
 })
 
@@ -57,13 +57,13 @@ app.post('/gotDigits', (req, res) => {
   }
   // if participants can't be added yet (actionUrl callback has not been called) notify caller and hang up
   if (room.isConferencePending) {
-    const say = persephony.percl.say('We are sorry, you cannot be added to the conference at this time. Please try again later.')
-    const percl = persephony.percl.build(say)
+    const say = freeclimb.percl.say('We are sorry, you cannot be added to the conference at this time. Please try again later.')
+    const percl = freeclimb.percl.build(say)
     res.status(200).json(percl)
   } else {
-    const say = persephony.percl.say('You will be added to the conference momentarily.')
+    const say = freeclimb.percl.say('You will be added to the conference momentarily.')
     const makeOrAddToConfScript = makeOrAddToConference(room, digits, callId)
-    const percl = persephony.percl.build(say, makeOrAddToConfScript)
+    const percl = freeclimb.percl.build(say, makeOrAddToConfScript)
     res.status(200).json(percl)
   }
 })
@@ -77,10 +77,10 @@ function makeOrAddToConference(room, roomCode, callId) {
       statusCallbackUrl: `${host}/conferenceStatus/${roomCode}`
     }
     // Create CreateConference PerCL command
-    return persephony.percl.createConference(`${host}/conferenceCreated/${roomCode}`, options)
+    return freeclimb.percl.createConference(`${host}/conferenceCreated/${roomCode}`, options)
   } else {
     // If a conference has been created and the actionUrl callback has been called, return a AddToConference PerCL command
-    return persephony.percl.addToConference(room.conferenceId, callId)
+    return freeclimb.percl.addToConference(room.conferenceId, callId)
   }
 }
 
@@ -99,8 +99,8 @@ app.post('/conferenceCreated/:roomCode', (req, res) => {
   room.conferenceId = conferenceId
   room.isConferencePending = false
   // Create AddToConference PerCL command
-  const addToConference = persephony.percl.addToConference(conferenceId, callId)
-  const percl = persephony.percl.build(addToConference)
+  const addToConference = freeclimb.percl.addToConference(conferenceId, callId)
+  const percl = freeclimb.percl.build(addToConference)
   res.status(200).json(percl)
 })
 
@@ -117,7 +117,7 @@ app.post('/conferenceStatus/:roomCode', (req, res) => {
     // Handle case where callback is called for a room that does not exist
   }
 
-  if (status === persephony.enums.conferenceStatus.EMPTY && room.canConferenceTerminate) {
+  if (status === freeclimb.enums.conferenceStatus.EMPTY && room.canConferenceTerminate) {
     terminateConference(conferenceId)
   }
   // after first EMPTY status update conference can be terminated
@@ -134,9 +134,9 @@ app.post('/status', (req, res) => {
 function terminateConference(conferenceId) {
   // Create the ConferenceUpdateOptions and set the status to terminated
   const options = {
-    status: persephony.enums.conferenceStatus.TERMINATED
+    status: freeclimb.enums.conferenceStatus.TERMINATED
   }
-  persephony.api.conferences.update(conferenceId, options)
+  freeclimb.api.conferences.update(conferenceId, options)
 }
 
 app.listen(port, () => {
