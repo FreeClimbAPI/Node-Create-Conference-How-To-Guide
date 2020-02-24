@@ -1,6 +1,6 @@
 # Node - Create Conference Tutorial
 
-This project serves as a guide to help you build an application with FreeClimb. View this tutorial on [FreeClimb.com](https://docs.freeclimb.com/docs/create-a-conference-and-add-participants-1#section-javascript). Specifically, the project will:
+This project serves as a guide to help you build an application with FreeClimb. View this tutorial on [FreeClimb.com](https://docs.freeclimb.com/docs/create-a-conference-and-add-participants-1#section-nodejs). Specifically, the project will:
 
 - Accept incoming calls
 - Receive digits from the caller
