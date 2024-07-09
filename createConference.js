@@ -33,7 +33,7 @@ for (let code in conferenceRoomsCodes) {
 
 app.post('/incomingCall', (req, res) => {
   // Create PerCL say command
-  const greeting = freeclimb.percl.say('Hello. Welcome to the conferences tutorial, please enter your access code.')
+  const greeting = freeclimb.percl.say('Hello. Welcome to the conferences how-to guide, please enter your access code.')
   // Create PerCL for getDigits command
   const options = {
     maxDigits: 1,
