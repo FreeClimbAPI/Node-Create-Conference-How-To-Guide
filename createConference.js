@@ -10,6 +10,7 @@ app.use(bodyParser.json())
 // Where your app is hosted ex. www.myapp.com
 const host = process.env.HOST
 const port = process.env.PORT || 3000
+const hostUrl = `${host}:${port}`
 // your freeclimb API key (available in the Dashboard) - be sure to set up environment variables to store these values
 const accountId = process.env.ACCOUNT_ID
 const apiKey = process.env.API_KEY
@@ -42,7 +43,7 @@ app.post('/incomingCall', (req, res) => {
   const greeting = new Say({ text: 'Hello. Welcome to the conferences how-to guide, please enter your access code.' })
   // Create PerCL for getDigits command
   const getDigits = new GetDigits({
-    actionUrl: `${host}/gotDigits`,
+    actionUrl: `${hostUrl}/gotDigits`,
     maxDigits: 1,
     minDigits: 1,
     flushBuffer: true
@@ -81,8 +82,8 @@ function makeOrAddToConference(room, roomCode, callId) {
     room.canConferenceTerminate = false
     // Create CreateConference PerCL command
     return new CreateConference({
-      actionUrl: `${host}/conferenceCreated/${roomCode}`,
-      statusCallbackUrl: `${host}/conferenceStatus/${roomCode}`
+      actionUrl: `${hostUrl}/conferenceCreated/${roomCode}`,
+      statusCallbackUrl: `${hostUrl}/conferenceStatus/${roomCode}`
     })
   } else {
     // If a conference has been created and the actionUrl callback has been called, return a AddToConference PerCL command
