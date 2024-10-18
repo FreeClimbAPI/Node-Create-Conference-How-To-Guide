@@ -28,6 +28,7 @@ To get started using a FreeClimb account, follow the instructions [here](https:/
    | ACCOUNT_ID              | Account ID which can be found under [API credentials](https://www.freeclimb.com/dashboard/portal/account/authentication) in Dashboard                                                         |
    | API_KEY              | API key which can be found under [API credentials](https://www.freeclimb.com/dashboard/portal/account/authentication) in Dashboard                                               |
    | HOST | The host url where your application is hosted (e.g. yourHostedApp.com) |
+   | PORT | the port for the server to run on (defaults to 3000)         |
 
 ## Runnning the how-to guide
 
